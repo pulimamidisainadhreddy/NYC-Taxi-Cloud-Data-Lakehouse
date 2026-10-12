@@ -1,0 +1,37 @@
+FROM spark:3.5.6 AS spark_source
+
+FROM python:3.11-slim-bookworm
+
+USER root
+
+# Install Java and tools needed by Spark.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       openjdk-17-jre-headless \
+       curl \
+       ca-certificates \
+       bash \
+       procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy Spark 3.5.6 into the Python 3.11 image.
+COPY --from=spark_source /opt/spark /opt/spark
+
+# Configure Java, Spark and Python.
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV SPARK_HOME=/opt/spark
+ENV PATH="/opt/spark/bin:/opt/spark/sbin:${PATH}"
+ENV PYSPARK_PYTHON=/usr/local/bin/python3
+ENV PYSPARK_DRIVER_PYTHON=/usr/local/bin/python3
+
+# Install the Hadoop S3 connector.
+RUN curl -fL --retry 3 \
+    -o /opt/spark/jars/hadoop-aws-3.3.4.jar \
+    https://repo.maven.apache.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar
+
+# Install the AWS SDK required by the connector.
+RUN curl -fL --retry 3 \
+    -o /opt/spark/jars/aws-java-sdk-bundle-1.12.262.jar \
+    https://repo.maven.apache.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar
+
+WORKDIR /opt/project

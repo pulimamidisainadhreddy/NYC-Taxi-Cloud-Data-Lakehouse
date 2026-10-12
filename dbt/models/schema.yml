@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: stg_yellow_taxi
+    columns:
+      - name: pickup_datetime
+        tests: [not_null]
+      - name: dropoff_datetime
+        tests: [not_null]
+      - name: pickup_location_id
+        tests: [not_null]
+      - name: dropoff_location_id
+        tests: [not_null]
+  - name: fct_trips
+    columns:
+      - name: pickup_datetime
+        tests: [not_null]
+      - name: total_amount
+        tests: [not_null]
+  - name: mart_daily_trip_metrics
+    columns:
+      - name: pickup_date
+        tests: [unique, not_null]

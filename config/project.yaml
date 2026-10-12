@@ -1,0 +1,13 @@
+project:
+  name: nyc-taxi-cloud-data-lakehouse
+dataset:
+  name: nyc_tlc_yellow_taxi
+  format: parquet
+  development_months: ["2025-01", "2025-02", "2025-03"]
+storage:
+  bronze_prefix: bronze/yellow_taxi
+  silver_prefix: silver/yellow_taxi
+  rejected_prefix: rejected/yellow_taxi
+  gold_prefix: gold
+quality:
+  max_invalid_rate: 0.05

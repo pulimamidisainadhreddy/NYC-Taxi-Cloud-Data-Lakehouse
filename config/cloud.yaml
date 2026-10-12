@@ -1,0 +1,7 @@
+aws:
+  region: us-east-1
+  bucket: REPLACE_ME
+athena:
+  database: nyc_taxi
+  workgroup: primary
+  output_location: s3://REPLACE_ME/athena-results/

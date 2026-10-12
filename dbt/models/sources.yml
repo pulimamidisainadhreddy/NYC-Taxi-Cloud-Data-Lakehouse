@@ -1,0 +1,7 @@
+version: 2
+sources:
+  - name: nyc_taxi
+    schema: nyc_taxi
+    tables:
+      - name: silver_yellow_taxi
+        description: Cleaned and validated Silver trip data.
